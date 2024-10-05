@@ -27,7 +27,7 @@ public class SelenuimAssignment {
 
     @BeforeClass
     public void setUp() {
-        // Set up ChromeDriver
+    	
         WebDriverManager.chromedriver().setup();
         driver = new ChromeDriver();
         driver.manage().window().maximize();
@@ -37,24 +37,19 @@ public class SelenuimAssignment {
 
     @Test
     public void amazonTest() {
-        // Add first product without going to cart
         searchAndAddProductToCart("Toys", false);  
 
-        // Add second product and then go to cart
         searchAndAddProductToCart("Toys", true);   
 
-        // Validate prices at the end
         validatePrices();
     }
 
-    // Method to search for products and optionally go to cart after adding
     private void searchAndAddProductToCart(String searchTerm, boolean goToCartAfterAdding) {
         searchProduct(searchTerm);
         List<WebElement> productList = getProductList();
         addFirstProductWithAddToCart(productList, goToCartAfterAdding);
     }
 
-    // Search for the given product
     private void searchProduct(String searchTerm) {
         WebElement searchBox = driver.findElement(By.id("twotabsearchtextbox"));
         searchBox.clear();  // Clear the search box before entering a new search term
@@ -62,12 +57,10 @@ public class SelenuimAssignment {
         searchBox.submit();
     }
 
-    // Retrieve the list of products
     private List<WebElement> getProductList() {
         return wait.until(ExpectedConditions.presenceOfAllElementsLocatedBy(By.cssSelector(".s-main-slot .s-result-item")));
     }
 
-    // Add the first product with an "Add to Cart" button and optionally go to cart
     private void addFirstProductWithAddToCart(List<WebElement> productList, boolean goToCartAfterAdding) {
         for (WebElement product : productList) {
             if (product.getText().contains("Add to cart")) {
